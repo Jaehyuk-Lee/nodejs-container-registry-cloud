@@ -35,5 +35,10 @@ app.get('/search', (req, res) => {
   connection.end();
 });
 
+app.get('/check-connection', (req, res) => {
+  res.send('Connection is OK!');
+  res.status(200).end();
+});
+
 app.listen(3000);
 console.log("Listening to port 3000");
