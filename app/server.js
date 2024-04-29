@@ -3,6 +3,13 @@ const app = express();
 const mysql = require('mysql2');
 const config = require('./config/config.js');
 
+const connection_info = {
+  host: config.DB_IP,
+  user: config.USER_NAME,
+  password: config.USER_PASSWORD,
+  database: config.DATABASE_NAME
+};
+
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET,POST');
@@ -12,21 +19,56 @@ app.use((req, res, next) => {
 });
 
 app.get('/search', (req, res) => {
-  console.log("name: " + req.query.name);
+  const PARAM = JSON.parse(req.query.param).params;
+  console.log(PARAM.name);
 
-  // create the connection to database
-  const connection = mysql.createConnection({
-    host: config.DB_IP,
-    user: config.USER_NAME,
-    password: config.USER_PASSWORD,
-    database: config.DATABASE_NAME
-  });
-
+  const connection = mysql.createConnection(connection_info);
   connection.query(
-    `SELECT * FROM ${config.TABLE_NAME} WHERE Name = '${req.query.name}'`,
+    `SELECT * FROM ${config.TABLE_NAME} WHERE Name = '${PARAM.name}'`,
     function (err, results, fields) {
       console.log(results);
       console.log(fields);
+
+      res.send(results);
+      res.status(200).end();
+    }
+  );
+  connection.end();
+});
+
+app.get('/searchUserID', (req, res) => {
+  const PARAM = JSON.parse(req.query.param).params;
+  console.log(PARAM.userID);
+
+  const connection = mysql.createConnection(connection_info);
+  connection.query(
+    `SELECT * FROM ${config.TABLE_NAME} WHERE UserID = '${PARAM.userID}'`,
+    function (err, results, fields) {
+      console.log(results);
+      console.log(fields);
+
+      res.send(results);
+      res.status(200).end();
+    }
+  );
+  connection.end();
+});
+
+app.get('/update', (req, res) => {
+  const PARAM = JSON.parse(req.query.param).params;
+
+  const connection = mysql.createConnection(connection_info);
+  connection.query(
+    `UPDATE ${config.TABLE_NAME} SET
+    Name = '${PARAM.name}',
+    ResidentRegistrationNumber = '${PARAM.residentRegistrationNumber}',
+    ContactNumber = '${PARAM.contactNumber}',
+    Address = '${PARAM.address}',
+    Email = '${PARAM.email}'
+    WHERE UserID = '${PARAM.userID}'`,
+    function (err, results, fields) {
+      console.log(results);
+      results.type = 'update';
 
       res.send(results);
       res.status(200).end();
