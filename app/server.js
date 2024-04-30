@@ -65,12 +65,46 @@ app.get('/update', (req, res) => {
     ContactNumber = '${PARAM.contactNumber}',
     Address = '${PARAM.address}',
     Email = '${PARAM.email}'
-    WHERE UserID = '${PARAM.userID}'`,
+    WHERE UserID = ${PARAM.userID}`,
     function (err, results, fields) {
       console.log(results);
-      results.type = 'update';
 
       res.send(results);
+      res.status(200).end();
+    }
+  );
+  connection.end();
+});
+
+app.get('/insert', (req, res) => {
+  const PARAM = JSON.parse(req.query.param).params;
+  console.log(PARAM);
+
+  const connection = mysql.createConnection(connection_info);
+  connection.query(
+    `INSERT INTO ${config.TABLE_NAME} (UserID, Name, ResidentRegistrationNumber, ContactNumber, Address, Email)
+      VALUES ('${PARAM.userID}', '${PARAM.name}', '${PARAM.residentRegistrationNumber}', '${PARAM.contactNumber}', '${PARAM.address}', '${PARAM.email}')`,
+    function (err, results, fields) {
+      console.log(results);
+
+      res.send(JSON.stringify(results));
+      res.status(200).end();
+    }
+  );
+  connection.end();
+});
+
+app.get('/delete', (req, res) => {
+  const PARAM = JSON.parse(req.query.param).params;
+  console.log(PARAM);
+
+  const connection = mysql.createConnection(connection_info);
+  connection.query(
+    `DELETE FROM ${config.TABLE_NAME} WHERE UserID = '${PARAM.userID}'`,
+    function (err, results, fields) {
+      console.log(results);
+
+      res.send(JSON.stringify(results));
       res.status(200).end();
     }
   );
