@@ -87,8 +87,8 @@ app.get('/insert', (req, res) => {
 
   const connection = mysql.createConnection(connection_info);
   connection.query(
-    `INSERT INTO ${config.TABLE_NAME} (UserID, Name, ResidentRegistrationNumber, ContactNumber, Address, Email)
-      VALUES ('${PARAM.userID}', '${PARAM.name}', '${PARAM.residentRegistrationNumber}', '${PARAM.contactNumber}', '${PARAM.address}', '${PARAM.email}')`,
+    `INSERT INTO ${config.TABLE_NAME} (Name, ResidentRegistrationNumber, ContactNumber, Address, Email)
+      VALUES ('${PARAM.name}', '${PARAM.residentRegistrationNumber}', '${PARAM.contactNumber}', '${PARAM.address}', '${PARAM.email}')`,
     function (err, results, fields) {
       console.log(results);
 
