@@ -24,7 +24,10 @@ app.get('/search', (req, res) => {
 
   const connection = mysql.createConnection(connection_info);
   connection.query(
-    `SELECT * FROM ${config.TABLE_NAME} WHERE Name = '${PARAM.name}'`,
+    `SELECT Name, ResidentRegistrationNumber, ContactNumber, Address, Email
+    FROM ${config.TABLE_NAME}
+    WHERE Name = '${PARAM.name}'
+    AND ContactNumber = '${PARAM.contactNumber}'`,
     function (err, results, fields) {
       console.log(results);
       console.log(fields);
@@ -42,7 +45,9 @@ app.get('/searchUserID', (req, res) => {
 
   const connection = mysql.createConnection(connection_info);
   connection.query(
-    `SELECT * FROM ${config.TABLE_NAME} WHERE UserID = '${PARAM.userID}'`,
+    `SELECT UserID, Name, ResidentRegistrationNumber, ContactNumber, Address, Email
+    FROM ${config.TABLE_NAME}
+    WHERE UserID = '${PARAM.userID}'`,
     function (err, results, fields) {
       console.log(results);
       console.log(fields);
