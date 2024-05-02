@@ -18,4 +18,4 @@ ENV TABLE_NAME="USER"
 
 EXPOSE 3000
 
-CMD ["/script.sh"]
+CMD ["node", "server.js"]
