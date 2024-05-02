@@ -123,4 +123,3 @@ app.get('/check-connection', (req, res) => {
 
 app.listen(3000);
 console.log("Listening to port 3000");
-console.log("DB 환경 변수: " + process.env.DB_IP);
